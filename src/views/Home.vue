@@ -1,25 +1,29 @@
 <template>
   <div class="home">
-    <div class="d1">
-    </div> 
+    <top-nav></top-nav>
+    <swiper-component></swiper-component>
+    <icon-list></icon-list>
+    <music-list></music-list>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+import TopNav from "@/components/TopNav.vue";
+import SwiperComponent from "@/components/SwiperComponent"
+import IconList from "@/components/IconList.vue"
+import MusicList from "@/components/MusicList.vue"
 
 export default {
   name: "Home",
   components: {
-    HelloWorld,
+    TopNav,
+    SwiperComponent,
+    IconList,
+    MusicList
   },
 };
 </script>
 <style scoped>
-.d1 {
-  width: 3.75rem;
-  height: 3.75rem;
-  background-color: lightskyblue;
-}
+
 </style>
