@@ -7,11 +7,15 @@
     <div class="mlist">
       <div class="swiper-container" id="musicList">
         <div class="swiper-wrapper">
-          <div class="swiper-slide" v-for="(item , index) in musicList" :key="index">
-            <img :src="item.picUrl" :alt="item.name">
-            <div class="title">{{item.name}}</div>
-            <div class="count">{{changValue(item.playCount)}}</div>
-          </div>
+          <router-link :to="{path:'/listView',query:{id: item.id}}"
+            class="swiper-slide"
+            v-for="(item, index) in state.musicList"
+            :key="index"
+          >
+            <img :src="item.picUrl" :alt="item.name" />
+            <div class="title">{{ item.name }}</div>
+            <div class="count">{{ changValue(item.playCount) }}</div>
+          </router-link>
         </div>
         <!-- Add Pagination -->
       </div>
@@ -23,43 +27,75 @@
 import Swiper from "swiper";
 import "swiper/css/swiper.css";
 
-import {getMusicList} from "@/api/index.js"
+import { getMusicList } from "@/api/index.js";
+import { reactive, onMounted, onUpdated } from "vue";
 
 export default {
-  name: "MusicList",
-  data() {
-    return {
-      musicList: []
-    }; 
-  },
-  components: {},
-  created() {},
-  async mounted() {
-    let res = await getMusicList()
-    this.musicList = res.data.result
-  },
-  updated() {
-    var swiper = new Swiper('#musicList', {
-      slidesPerView: 3,
-      spaceBetween: 10,
-     
-    });
-  },
-  methods: {
-    changValue(num) {
-      let res =0
-      if(num>100000000) {
-        res = num/100000000
-        res = res.toFixed(2) + '亿'
+  setup() {
+    let state = reactive({musicList:[]});
+    function changValue(num) {
+      let res = 0;
+      if (num > 100000000) {
+        res = num / 100000000;
+        res = res.toFixed(2) + "亿";
+      } else if (num > 10000) {
+        res = num / 10000;
+        res = res.toFixed(2) + "万";
       }
-      else if(num>10000) {
-        res = num/10000
-        res = res.toFixed(2) + '万'
-      }
-      return res
+      return res;
     }
+    onMounted(async() => {
+      let res = await getMusicList();
+      state.musicList = res.data.result;
+    });
+    onUpdated(() => {
+      var swiper = new Swiper("#musicList", {
+        slidesPerView: 3,
+        spaceBetween: 10,
+      });
+    });
+    return {
+      state,
+      changValue,
+    };
   },
 };
+
+// export default {
+//   name: "MusicList",
+//   data() {
+//     return {
+//       musicList: []
+//     };
+//   },
+//   components: {},
+//   created() {},
+//   async mounted() {
+//     let res = await getMusicList()
+//     this.musicList = res.data.result
+//   },
+//   updated() {
+//     var swiper = new Swiper('#musicList', {
+//       slidesPerView: 3,
+//       spaceBetween: 10,
+
+//     });
+//   },
+//   methods: {
+//     changValue(num) {
+//       let res =0
+//       if(num>100000000) {
+//         res = num/100000000
+//         res = res.toFixed(2) + '亿'
+//       }
+//       else if(num>10000) {
+//         res = num/10000
+//         res = res.toFixed(2) + '万'
+//       }
+//       return res
+//     }
+//   },
+// };
 </script>
 <style scoped>
 .musicList {

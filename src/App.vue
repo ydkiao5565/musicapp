@@ -13,4 +13,8 @@
   width: 0.3rem;
   height: 0.3rem;
 }
+a {
+  color: #000;
+  text-decoration: none;
+}
 </style>
