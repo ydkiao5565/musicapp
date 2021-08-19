@@ -2,7 +2,7 @@
   <div class="listViewTop">
     <img class="bg" :src="playlist.coverImgUrl">
     <div class="listViewTopNav">
-      <div class="back">
+      <div class="back" @click="$router.go(-1)">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-arrowLeft"></use>
         </svg>
@@ -34,6 +34,32 @@
         </div>
       </div>
     </div>
+    <div class="iconList">
+      <div class="iconItem">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-liaotian"></use>
+        </svg>
+        <div class="title">{{playlist.commentCount}}</div>
+      </div>
+      <div class="iconItem">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-fenxiang"></use>
+        </svg>
+        <div class="title">{{playlist.shareCount}}</div>
+      </div>
+      <div class="iconItem">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-xiazai"></use>
+        </svg>
+        <div class="title">下载</div>
+      </div>
+      <div class="iconItem">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-show_duoxuan"></use>
+        </svg>
+        <div class="title">多选</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -51,11 +77,11 @@ export default {
       let res =0
       if(num>100000000) {
         res = num/100000000
-        res = res.toFixed(0) + '亿'
+        res = res.toFixed(2) + '亿'
       }
       else if(num>10000) {
         res = num/10000
-        res = res.toFixed(0) + '万'
+        res = res.toFixed(2) + '万'
       }
       return res
     }
@@ -67,7 +93,7 @@ export default {
 .listViewTop {
   width: 7.5rem;
   padding: 0 0.4rem;
-  height: 6rem;
+  /* height: 6rem; */
 }
 .listViewTop .bg {
   position: fixed;
@@ -86,7 +112,7 @@ export default {
   font-size: 0.35rem;
 }
 .listViewTopNav .title {
-  color: #ccc;
+  color: #fff;
   margin-left: 0.4rem;
 }
 .listViewTopNav .serch {
@@ -158,5 +184,22 @@ export default {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+}
+.iconList {
+  display: flex;
+  justify-content: space-around;
+}
+.iconList .iconItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.iconItem .icon {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+.iconItem .title {
+  color: #fff;
+  padding-top: 0.1rem;
 }
 </style>

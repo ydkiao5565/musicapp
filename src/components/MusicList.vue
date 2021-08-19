@@ -29,6 +29,7 @@ import "swiper/css/swiper.css";
 
 import { getMusicList } from "@/api/index.js";
 import { reactive, onMounted, onUpdated } from "vue";
+import store from "@/store/index.js"
 
 export default {
   setup() {
