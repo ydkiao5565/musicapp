@@ -1,6 +1,6 @@
 <template>
   <div class="playController">
-    <div class="left">
+    <div class="left" @click="show = !show">
       <img :src="playlist[playCurrentIndex].al.picUrl" alt="" />
       <div class="content">
         <div class="title">{{playlist[playCurrentIndex].al.name}}</div>
@@ -8,29 +8,54 @@
       </div>
     </div>
     <div class="right">
-      <svg class="icon" aria-hidden="true">
+      <svg v-show="paused" class="icon" aria-hidden="true" @click="playMusic">
         <use xlink:href="#icon-bofang"></use>
+      </svg>
+      <svg v-show="!paused" class="icon" aria-hidden="true" @click="playMusic">
+        <use xlink:href="#icon-caozuo-bofang-zanting"></use>
       </svg>
       <svg class="icon" aria-hidden="true">
         <use xlink:href="#icon-liebiao1"></use>
       </svg>
     </div>
+    <play-music @back="show = !show" v-show="show" :playDetail = "playlist[playCurrentIndex]"></play-music>
+    <audio ref="audio" :src="`https://music.163.com/song/media/outer/url?id=${playlist[playCurrentIndex].id}.mp3`"></audio>
   </div>
 </template>
 
 <script>
 import {mapState,mapMutations} from 'vuex'
+import PlayMusic from '@/components/PlayMusic.vue'
 export default {
   name: "PlayController",
   data() {
-    return {};
+    return {
+      paused: true,
+      show: false
+    };
   },
-  components: {},
+  components: {PlayMusic},
   created() {},
-  mounted() {},
-  methods: {},
+  mounted() {
+    // console.log(this.$refs.audio)
+  },
+  methods: {
+    playMusic() {
+      if(this.$refs.audio.paused) {
+        this.$refs.audio.play()
+        this.paused = false
+      }
+      else {
+        this.$refs.audio.pause()
+        this.paused = true
+      }
+    }
+  },
   computed: {
     ...mapState(['playlist','playCurrentIndex'])
+  },
+  updated() {
+    console.log(this.playlist[this.playCurrentIndex])
   }
 };
 </script>
