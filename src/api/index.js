@@ -19,3 +19,8 @@ export function getPlaylistDetail(id) {
 export function getLyric(id) {
   return axios.get(`http://localhost:3000/lyric?id=${id}`)
 }
+
+//搜索歌曲
+export function searchMusic(keyword) {
+  return axios.get(`http://localhost:3000/search?keywords=${keyword}`)
+}

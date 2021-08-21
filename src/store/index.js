@@ -27,7 +27,7 @@ export default createStore({
         // console.log(min,sec,mill)
         return {
           min,sec,mill,
-          lyric:item.slice(11,item.length),
+          lyric:item.slice(10,item.length),
           content:item,
           time:parseInt(mill) + parseInt(sec)*1000 + parseInt(min)*60*1000
         } 
@@ -46,6 +46,9 @@ export default createStore({
   mutations: {
     setPlaylist(state, value) {
       state.playlist = value
+    },
+    pushPlaylist(state, value) {
+      state.playlist.push(value)
     },
     setPlayIndex(state,value) {
       state.playCurrentIndex = value
