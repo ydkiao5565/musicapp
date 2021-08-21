@@ -3,60 +3,80 @@
     <div class="left" @click="show = !show">
       <img :src="playlist[playCurrentIndex].al.picUrl" alt="" />
       <div class="content">
-        <div class="title">{{playlist[playCurrentIndex].al.name}}</div>
+        <div class="title">{{ playlist[playCurrentIndex].al.name }}</div>
         <div class="tips">横滑可以切换上下首哦</div>
       </div>
     </div>
     <div class="right">
       <svg v-show="paused" class="icon" aria-hidden="true" @click="playMusic">
-        <use xlink:href="#icon-bofang"></use>
+        <use xlink:href="#icon-bofang-black"></use>
       </svg>
       <svg v-show="!paused" class="icon" aria-hidden="true" @click="playMusic">
-        <use xlink:href="#icon-caozuo-bofang-zanting"></use>
+        <use xlink:href="#icon-caozuo-bofang-zanting-black"></use>
       </svg>
       <svg class="icon" aria-hidden="true">
         <use xlink:href="#icon-liebiao1"></use>
       </svg>
     </div>
-    <play-music @back="show = !show" v-show="show" :playDetail = "playlist[playCurrentIndex]"></play-music>
-    <audio ref="audio" :src="`https://music.163.com/song/media/outer/url?id=${playlist[playCurrentIndex].id}.mp3`"></audio>
+    <play-music
+      :playMusic="playMusic"
+      :paused="paused"
+      @back="show = !show"
+      v-show="show"
+      :playDetail="playlist[playCurrentIndex]"
+    ></play-music>
+    <audio
+      ref="audio"
+      :src="`https://music.163.com/song/media/outer/url?id=${playlist[playCurrentIndex].id}.mp3`"
+    ></audio>
   </div>
 </template>
 
 <script>
-import {mapState,mapMutations} from 'vuex'
-import PlayMusic from '@/components/PlayMusic.vue'
+import { mapState, mapMutations } from "vuex";
+import PlayMusic from "@/components/PlayMusic.vue";
 export default {
   name: "PlayController",
   data() {
     return {
       paused: true,
-      show: false
+      show: false,
     };
   },
-  components: {PlayMusic},
+  components: { PlayMusic },
   created() {},
   mounted() {
+    
     // console.log(this.$refs.audio)
   },
   methods: {
     playMusic() {
-      if(this.$refs.audio.paused) {
-        this.$refs.audio.play()
-        this.paused = false
+      if (this.$refs.audio.paused) {
+        this.$refs.audio.play();
+        this.paused = false;
+        this.UpdateTime();
+      } else {
+        this.$refs.audio.pause();
+        this.paused = true;
+        clearInterval(this.$store.state.id)
       }
-      else {
-        this.$refs.audio.pause()
-        this.paused = true
-      }
-    }
+    },
+    UpdateTime() {
+      this.$store.state.id = setInterval(() => {
+        this.$store.commit("setCurrentTime", this.$refs.audio.currentTime);
+      }, 1000);
+    },
   },
   computed: {
-    ...mapState(['playlist','playCurrentIndex'])
+    ...mapState(["playlist", "playCurrentIndex"]),
   },
   updated() {
-    console.log(this.playlist[this.playCurrentIndex])
-  }
+    this.$store.dispatch("reqLyric", {
+      id: this.playlist[this.playCurrentIndex].id,
+    });
+
+    console.log(this.playlist[this.playCurrentIndex]);
+  },
 };
 </script>
 <style scoped>
@@ -71,6 +91,7 @@ export default {
   align-items: center;
   border-top: 1px solid #ccc;
   background-color: #fff;
+  z-index: 99;
 }
 .playController .left {
   display: flex;
