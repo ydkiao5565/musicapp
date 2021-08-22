@@ -24,3 +24,14 @@ export function getLyric(id) {
 export function searchMusic(keyword) {
   return axios.get(`http://localhost:3000/search?keywords=${keyword}`)
 }
+
+//手机登录
+export function phoneLogin(phone,password) {
+  return axios.get(`http://localhost:3000/login/cellphone?phone=${phone}&password=${password}`)
+}
+
+//获取用户详情
+
+export function userDetail(uid) {
+  return axios.get(`http://localhost:3000/user/detail?uid=${uid}`)
+}

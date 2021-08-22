@@ -6,7 +6,7 @@
         </svg>
       </div>
       <div class="topCenter">
-        <span class="navBth">我的</span>
+        <span class="navBth" @click="$router.push('/me')">我的</span>
         <span class="navBth active">发现</span>
         <span class="navBth">云村</span>
         <span class="navBth">视频</span>

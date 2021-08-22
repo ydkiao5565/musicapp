@@ -1,5 +1,7 @@
 import { createStore } from 'vuex'
 import { getLyric } from '@/api/index.js'
+import { phoneLogin } from '@/api/index.js'
+import { userDetail } from '@/api/index.js'
 
 export default createStore({
   state: {
@@ -16,8 +18,13 @@ export default createStore({
     playCurrentIndex: 0,
     lyric: '',
     currentTime: 0,
-    intervalId: 0
-  },
+    intervalId: 0,
+    user: {
+      isLogin: false,
+      account: {},
+      theUserDetail: {}
+      }
+    },
   getters: {
     lyricList(state) {
       let arr = state.lyric.split(/\n/igs).map((item,index,arr)=> {
@@ -58,6 +65,9 @@ export default createStore({
     },
     setCurrentTime(state,value) {
       state.currentTime = value
+    },
+    setUser(state,value) {
+      state.user = value
     }
   },
   actions: {
@@ -65,7 +75,24 @@ export default createStore({
       let res = await getLyric(payload.id)
       content.commit('setLyric',res.data.lrc.lyric)
     },
+    async phoneLogin(content, payload) {
+      // console.log(payload)
+      let res = await phoneLogin(payload.phone,payload.password)
+      console.log(res)
     
+      if(res.data.code === 200) {
+        content.state.user.isLogin = true
+        content.state.user.account = res.data.account
+
+        let theUserDetail = await userDetail(res.data.account.id)
+        content.state.user.theUserDetail = theUserDetail.data
+        localStorage.userData = JSON.stringify(content.state.user)
+
+        console.log(theUserDetail)
+        content.commit('setUser',content.state.user)
+      }
+      return res
+    }
   },
   modules: {
   }
