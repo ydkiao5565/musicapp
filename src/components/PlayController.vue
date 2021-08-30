@@ -58,7 +58,7 @@ export default {
       } else {
         this.$refs.audio.pause();
         this.paused = true;
-        clearInterval(this.$store.state.id)
+        clearInterval(this.$store.state.id);
       }
     },
     UpdateTime() {
@@ -75,7 +75,7 @@ export default {
       id: this.playlist[this.playCurrentIndex].id,
     });
 
-    console.log(this.playlist[this.playCurrentIndex]);
+    console.log(this.playlist[this.playCurrentIndex]); 
   },
 };
 </script>

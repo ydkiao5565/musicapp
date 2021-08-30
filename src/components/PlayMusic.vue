@@ -23,17 +23,22 @@
         </svg>
       </div>
     </div>
-    <div v-show="!isLyric" class="playContent">
-      <img class="disc" src="@/assets/img/quan.png" alt="" />
+    <div v-show="!isLyric" class="playContent" @click="changeState()">
+        <img class="disc" src="@/assets/img/quan.png" alt="" />
+        <img :class="{playImg:true, discactive: isRote}" :src="playDetail.al.picUrl" alt="" />
       <img
         class="needle"
         :class="{ active: !paused }"
         src="@/assets/img/needle-ab.png"
         alt=""
       />
-      <img class="playImg" :src="playDetail.al.picUrl" alt="" />
     </div>
-    <div v-show="isLyric" class="playLyric" ref="playLyric">
+    <div
+      v-show="isLyric"
+      class="playLyric"
+      ref="playLyric"
+      @click="changeState()"
+    >
       <p
         :class="{
           active:
@@ -46,7 +51,9 @@
         {{ item.lyric }}
       </p>
     </div>
-    <div class="progress"></div>
+    <div class="progress">
+      <h3 class="tip">轻触屏幕切换歌词</h3>
+    </div>
     <div class="playFooter">
       <svg class="icon" aria-hidden="true">
         <use xlink:href="#icon-xunhuan"></use>
@@ -55,14 +62,25 @@
         <use xlink:href="#icon-shangyishoushangyige" @click="goPlay(-1)"></use>
       </svg>
       <svg
-        v-if="paused"
+        v-show="paused"
         class="icon play"
         aria-hidden="true"
-        @click="playMusic()"
+        @click="
+          playMusic();
+          changeRote();
+        "
       >
         <use xlink:href="#icon-bofang"></use>
       </svg>
-      <svg v-else class="icon play" aria-hidden="true" @click="playMusic()">
+      <svg
+        v-show="!paused"
+        class="icon play"
+        aria-hidden="true"
+        @click="
+          playMusic();
+          changeRote();
+        "
+      >
         <use xlink:href="#icon-caozuo-bofang-zanting"></use>
       </svg>
       <svg class="icon" aria-hidden="true">
@@ -81,7 +99,8 @@ export default {
   name: "PlayMusic",
   data() {
     return {
-      isLyric: true,
+      isRote: false,
+      isLyric: false,
     };
   },
   props: ["playDetail", "paused", "playMusic"],
@@ -93,17 +112,24 @@ export default {
       // console.log(num)
       // console.log(this.playlist)
       // console.log(this.playCurrentIndex)
-      let index = this.playCurrentIndex+num
-      if(index<0) {
-        index = this.playlist.length - 1
-      }else if(index == this.playlist.length) {
-        index = 0
+      let index = this.playCurrentIndex + num;
+      if (index < 0) {
+        index = this.playlist.length - 1;
+      } else if (index == this.playlist.length) {
+        index = 0;
       }
-      this.$store.commit('setPlayIndex', index)
-    }
+      this.$store.commit("setPlayIndex", index);
+    },
+    changeState() {
+      this.isLyric = !this.isLyric;
+    },
+    changeRote() {
+      this.isRote = !this.isRote;
+      // console.log(this.isRote);
+    },
   },
   computed: {
-    ...mapState(["lyric", "currentTime","playlist","playCurrentIndex"]),
+    ...mapState(["lyric", "currentTime", "playlist", "playCurrentIndex"]),
   },
   watch: {
     currentTime() {
@@ -196,7 +222,7 @@ export default {
   height: 3.5rem;
   border-radius: 1.75rem;
   position: absolute;
-  left: 50%;
+  left: 50%;  
   transform: translateX(-50%);
   top: 2.8rem;
 }
@@ -228,7 +254,7 @@ export default {
   overflow: scroll;
   text-align: center;
   color: #fff;
-  
+
   color: rgba(255, 255, 255, 0.6);
 
   scroll-behavior: smooth;
@@ -240,5 +266,31 @@ export default {
 .playLyric p {
   font-size: 0.4rem;
   margin: 0.2rem 0;
+}
+@keyframes rotate {
+  from {
+    transform: translateX(-50%) rotate(0deg);
+  }
+  to {
+    transform: translateX(-50%) rotate(360deg);
+  }
+}
+.discactive {
+  animation-name: rotate;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+.progress {
+  margin-top: 3rem;
+  display: flex;
+  justify-content: space-around;
+}
+.progress .tip {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.3);
+  width: 50%;
+  filter: blur(0px);
+
 }
 </style>
