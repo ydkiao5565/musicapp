@@ -3,7 +3,7 @@
     <div class="playlist-top">
       <div class="left">
         <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-bofang"></use>
+          <use xlink:href="#icon-bofang-black"></use>
         </svg>
         <div class="text">
           <span class="title">播放全部</span>
@@ -86,6 +86,8 @@ export default {
 .left .icon {
   width: 0.5rem;
   height: 0.5rem;
+  margin-left: 0.2rem;
+
 }
 .left .text {
   display: flex;

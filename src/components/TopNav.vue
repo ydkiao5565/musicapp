@@ -2,7 +2,7 @@
   <div class="topNav">
       <div class="topLeft">
         <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-liebiao"></use>
+          <use xlink:href="#icon-liebiao-black"></use>
         </svg>
       </div>
       <div class="topCenter">
