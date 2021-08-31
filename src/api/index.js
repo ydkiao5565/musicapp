@@ -35,3 +35,8 @@ export function phoneLogin(phone,password) {
 export function userDetail(uid) {
   return axios.get(`http://localhost:3000/user/detail?uid=${uid}`)
 }
+
+//获取用户等级
+export function getUserSubcount() {
+  return axios.get(`http://localhost:3000/user/subcount`)
+}

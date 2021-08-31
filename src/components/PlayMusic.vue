@@ -5,7 +5,7 @@
       :style="{ backgroundImage: `url(${playDetail.al.picUrl})` }"
     ></div>
     <div class="playTop">
-      <div class="back" @click="$emit('back')">
+      <div class="back" @click="$emit('back');changeState()">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-arrowLeft"></use>
         </svg>
@@ -24,14 +24,21 @@
       </div>
     </div>
     <div v-show="!isLyric" class="playContent" @click="changeState()">
-        <img class="disc" src="@/assets/img/quan.png" alt="" />
-        <img :class="{playImg:true, discactive: isRote}" :src="playDetail.al.picUrl" alt="" />
+      <img class="disc" src="@/assets/img/quan.png" alt="" />
+      <img
+        :class="{ playImg: true, discactive: isRote }"
+        :src="playDetail.al.picUrl"
+        alt=""
+      />
       <img
         class="needle"
         :class="{ active: !paused }"
         src="@/assets/img/needle-ab.png"
         alt=""
       />
+      <div class="progress">
+        <h3 class="tip">轻触屏幕切换歌词</h3>
+      </div>
     </div>
     <div
       v-show="isLyric"
@@ -49,10 +56,7 @@
         :key="index"
       >
         {{ item.lyric }}
-      </p>
-    </div>
-    <div class="progress">
-      <h3 class="tip">轻触屏幕切换歌词</h3>
+      </p>    
     </div>
     <div class="playFooter">
       <svg class="icon" aria-hidden="true">
@@ -187,7 +191,7 @@ export default {
 .playContent {
   position: relative;
   width: 7.5rem;
-  height: 7.5rem;
+  height: 9rem;
   left: 0;
   top: 1.5rem;
 }
@@ -222,7 +226,7 @@ export default {
   height: 3.5rem;
   border-radius: 1.75rem;
   position: absolute;
-  left: 50%;  
+  left: 50%;
   transform: translateX(-50%);
   top: 2.8rem;
 }
@@ -282,6 +286,10 @@ export default {
   animation-timing-function: linear;
 }
 .progress {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
   margin-top: 3rem;
   display: flex;
   justify-content: space-around;
@@ -289,8 +297,7 @@ export default {
 .progress .tip {
   text-align: center;
   color: rgba(255, 255, 255, 0.3);
-  width: 50%;
+  width: 100%;
   filter: blur(0px);
-
 }
 </style>

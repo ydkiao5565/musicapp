@@ -27,7 +27,7 @@
 import Swiper from "swiper";
 import "swiper/css/swiper.css";
 
-import { getMusicList } from "@/api/index.js";
+import { getMusicList,getPlaylistDetail } from "@/api/index.js";
 import { reactive, onMounted, onUpdated } from "vue";
 import store from "@/store/index.js"
 
@@ -47,7 +47,13 @@ export default {
     }
     onMounted(async() => {
       let res = await getMusicList();
+      console.log(res)
       state.musicList = res.data.result;
+      let firstmusic = await getPlaylistDetail(state.musicList[0].id)
+      console.log(firstmusic.data.playlist.tracks[0].al)
+      // let newplaylist = firstmusic.data.playlist.tracks[0].al
+      // let tempplaylist = {id:newplaylist.id,name:newplaylist.name,}
+      store.commit('setPlaylist',firstmusic.data.playlist.tracks)
     });
     onUpdated(() => {
       var swiper = new Swiper("#musicList", {

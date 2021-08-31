@@ -32,7 +32,7 @@
         </div>
       </div>
       <div class="right">
-        <svg class="icon bofang" aria-hidden="true" @click="setPlayIndex(index); changePaused()">
+        <svg class="icon bofang" aria-hidden="true" @click="setPlayIndex(index); ">
           <use xlink:href="#icon-bofangshu"></use>
         </svg>
         <svg class="icon" aria-hidden="true">
